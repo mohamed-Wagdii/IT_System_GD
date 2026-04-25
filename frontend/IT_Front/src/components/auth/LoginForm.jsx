@@ -8,6 +8,7 @@ const INITIAL = {
   identifier: '',
   password: '',
   rememberDevice: false,
+  role: 'user',
 };
 
 const LoginForm = () => {
@@ -36,7 +37,7 @@ const LoginForm = () => {
 
     setLoading(true);
     try {
-      const loggedUser = await login(values.identifier, values.password);
+      const loggedUser = await login(values.identifier, values.password, values.role);
       navigate(loggedUser.role === 'admin' ? '/dashboard/admin' : '/dashboard');
     } catch (err) {
       setServerError(err.message || 'Invalid credentials. Please try again.');
@@ -52,7 +53,29 @@ const LoginForm = () => {
     >
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <h2 className="fw-bold mb-1">Sign In</h2>
-        <p className="text-muted mb-4 small">Enter your credentials to access the ledger.</p>
+        <p className="text-muted mb-3 small">Enter your credentials to access the ledger.</p>
+
+        {/* Role Toggle */}
+        <div className="d-flex mb-4 rounded overflow-hidden border" style={{ borderColor: '#1a3a6b' }}>
+          {['user', 'admin'].map((r) => (
+            <button
+              key={r}
+              type="button"
+              className="btn w-50 fw-semibold py-2"
+              style={{
+                background: values.role === r ? '#1a3a6b' : '#fff',
+                color: values.role === r ? '#fff' : '#1a3a6b',
+                borderRadius: 0,
+                fontSize: '0.85rem',
+              }}
+              onClick={() => handleChange({ target: { name: 'role', value: r, type: 'text' } })}
+              disabled={loading}
+            >
+              <i className={`bi ${r === 'admin' ? 'bi-shield-lock' : 'bi-person'} me-1`}></i>
+              {r === 'admin' ? 'Admin' : 'User'}
+            </button>
+          ))}
+        </div>
 
         {serverError && (
           <div className="alert alert-danger py-2 small">{serverError}</div>

@@ -18,6 +18,7 @@ const INITIAL = {
   workEmail: '',
   department: '',
   password: '',
+  role: 'user',
 };
 
 const RegisterForm = () => {
@@ -51,6 +52,7 @@ const RegisterForm = () => {
         email: values.workEmail,
         password: values.password,
         department: values.department,
+        role: values.role,
       });
       navigate('/login');
     } catch (err) {
@@ -67,7 +69,29 @@ const RegisterForm = () => {
     >
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <h2 className="fw-bold mb-1">Create Account</h2>
-        <p className="text-muted mb-4 small">Request access to the infrastructure portal.</p>
+        <p className="text-muted mb-3 small">Request access to the infrastructure portal.</p>
+
+        {/* Role Toggle */}
+        <div className="d-flex mb-4 rounded overflow-hidden border" style={{ borderColor: '#1a3a6b' }}>
+          {['user', 'admin'].map((r) => (
+            <button
+              key={r}
+              type="button"
+              className="btn w-50 fw-semibold py-2"
+              style={{
+                background: values.role === r ? '#1a3a6b' : '#fff',
+                color: values.role === r ? '#fff' : '#1a3a6b',
+                borderRadius: 0,
+                fontSize: '0.85rem',
+              }}
+              onClick={() => handleChange({ target: { name: 'role', value: r, type: 'text' } })}
+              disabled={loading}
+            >
+              <i className={`bi ${r === 'admin' ? 'bi-shield-lock' : 'bi-person'} me-1`}></i>
+              {r === 'admin' ? 'Admin' : 'User'}
+            </button>
+          ))}
+        </div>
 
         {serverError && (
           <div className="alert alert-danger py-2 small">{serverError}</div>
