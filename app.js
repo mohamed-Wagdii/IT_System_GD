@@ -1,46 +1,31 @@
 require("dotenv").config();
 
-const mongoose = require ("mongoose");
 const express = require ("express");
 const app = express();
+const mongoose = require ("mongoose");
+
+const dbconnection = ""
 
 
 app.use(express.json());
 
 
+
+
+    
+    
+    
+    
+
+    
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/tickets', require('./routes/ticketRoutes'));
+    
+
+    
+    
 const port = process.env.PORT || 3000;
 
-
-async function dbconnection(){
-try {
-    
-await mongoose.connect(process.env.DB-URL );
-console.log("connected");
-
-} catch (error) {
-    console.log(error)
-};
-
-dbconnection();
-
-
-
-
-const authRoutes =require("./routers/authRoutes");
-app.use("/api",authRoutes);
-
-
-
-
-
-
-
-
-
-
-
 app.listen(port, ()=> {
-    console.log("server is running at port ${port} ")}
+    console.log(`server is running at port ${port}`)}
 );
-
-}
