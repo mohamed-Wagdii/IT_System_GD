@@ -2,10 +2,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthForm from '../../hooks/useAuthForm';
 import { validateLogin } from '../../utils/validators';
-import { useApp } from '../../context/AppContext';
 
 const INITIAL = {
-  identifier: '',
+  email: '',
   password: '',
   rememberDevice: false,
   role: 'user',
@@ -13,7 +12,6 @@ const INITIAL = {
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { login } = useApp();
   const {
     values,
     errors,
@@ -37,8 +35,26 @@ const LoginForm = () => {
 
     setLoading(true);
     try {
-      const loggedUser = await login(values.identifier, values.password, values.role);
-      navigate(loggedUser.role === 'admin' ? '/dashboard/admin' : '/dashboard');
+      const res = await fetch('http://localhost:5000/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: values.email, password: values.password }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(Array.isArray(data.msg) ? data.msg.join(', ') : data.msg);
+
+      const actualRole = data.user?.role;
+      if (actualRole !== values.role) {
+        throw new Error(
+          values.role === 'admin'
+            ? 'Access denied. This account is not an admin.'
+            : 'Access denied. Please use the Admin login for this account.'
+        );
+      }
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      navigate(actualRole === 'admin' ? '/dashboard/admin' : '/dashboard');
     } catch (err) {
       setServerError(err.message || 'Invalid credentials. Please try again.');
     } finally {
@@ -48,10 +64,10 @@ const LoginForm = () => {
 
   return (
     <div
-      className="d-flex align-items-center justify-content-center flex-grow-1 p-4"
-      style={{ background: '#fff', minHeight: '100vh' }}
+      className="d-flex align-items-center justify-content-center flex-grow-1"
+      style={{ background: '#f8f9fc', minHeight: '100vh', padding: '2rem 3rem' }}
     >
-      <div style={{ width: '100%', maxWidth: '420px' }}>
+      <div style={{ width: '100%', maxWidth: '520px' }}>
         <h2 className="fw-bold mb-1">Sign In</h2>
         <p className="text-muted mb-3 small">Enter your credentials to access the ledger.</p>
 
@@ -89,24 +105,24 @@ const LoginForm = () => {
               className="form-label text-uppercase fw-semibold"
               style={{ fontSize: '0.7rem', letterSpacing: '0.08em', color: '#555' }}
             >
-              Email or Username
+              Email
             </label>
             <div className="input-group">
               <span className="input-group-text bg-light border-end-0" style={{ color: '#888' }}>
                 <i className="bi bi-person"></i>
               </span>
               <input
-                id="identifier"
-                name="identifier"
-                type="text"
-                className={`form-control bg-light border-start-0 ${errors.identifier ? 'is-invalid' : ''}`}
+                id="email"
+                name="email"
+                type="email"
+                className={`form-control bg-light border-start-0 ${errors.email ? 'is-invalid' : ''}`}
                 placeholder="admin@architectledger.com"
-                value={values.identifier}
+                value={values.email}
                 onChange={handleChange}
                 disabled={loading}
               />
-              {errors.identifier && (
-                <div className="invalid-feedback">{errors.identifier}</div>
+              {errors.email && (
+                <div className="invalid-feedback">{errors.email}</div>
               )}
             </div>
           </div>

@@ -2,7 +2,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import useAuthForm from '../../hooks/useAuthForm';
 import { validateRegister } from '../../utils/validators';
-import { useApp } from '../../context/AppContext';
 
 const DEPARTMENTS = [
   'Engineering',
@@ -23,7 +22,6 @@ const INITIAL = {
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const { register } = useApp();
   const {
     values,
     errors,
@@ -47,13 +45,19 @@ const RegisterForm = () => {
 
     setLoading(true);
     try {
-      await register({
-        username: values.fullName,
-        email: values.workEmail,
-        password: values.password,
-        department: values.department,
-        role: values.role,
+      const res = await fetch('http://localhost:5000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: values.fullName,
+          email: values.workEmail,
+          password: values.password,
+          department: values.department,
+          role: values.role,
+        }),
       });
+      const data = await res.json();
+      if (!res.ok) throw new Error(Array.isArray(data.msg) ? data.msg.join(', ') : data.msg);
       navigate('/login');
     } catch (err) {
       setServerError(err.message || 'Registration failed. Please try again.');
@@ -64,10 +68,10 @@ const RegisterForm = () => {
 
   return (
     <div
-      className="d-flex align-items-center justify-content-center flex-grow-1 p-4"
-      style={{ background: '#fff', minHeight: '100vh' }}
+      className="d-flex align-items-center justify-content-center flex-grow-1"
+      style={{ background: '#f8f9fc', minHeight: '100vh', padding: '2rem 3rem' }}
     >
-      <div style={{ width: '100%', maxWidth: '420px' }}>
+      <div style={{ width: '100%', maxWidth: '520px' }}>
         <h2 className="fw-bold mb-1">Create Account</h2>
         <p className="text-muted mb-3 small">Request access to the infrastructure portal.</p>
 

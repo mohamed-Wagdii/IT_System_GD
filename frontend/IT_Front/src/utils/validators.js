@@ -24,11 +24,11 @@ export const validateRegister = ({ fullName, workEmail, department, password }) 
   return errors;
 };
 
-export const validateLogin = ({ identifier, password }) => {
+export const validateLogin = ({ email, password }) => {
   const errors = {};
 
-  if (!identifier.trim()) {
-    errors.identifier = 'Email or username is required.';
+  if (!email || !email.trim()) {
+    errors.email = 'Email is required.';
   }
 
   if (!password) {

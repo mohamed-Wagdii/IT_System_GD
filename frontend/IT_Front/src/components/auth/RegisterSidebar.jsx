@@ -4,47 +4,41 @@ const RegisterSidebar = () => {
   return (
     <div
       className="d-none d-lg-flex flex-column justify-content-between p-5 min-vh-100"
-      style={{ background: '#eef0f5', width: '55%' }}
+      style={{ background: 'linear-gradient(160deg, #1a3a6b 0%, #0f2347 100%)', width: '40%', flexShrink: 0 }}
     >
       {/* Top: Logo */}
-      <div>
-        <h1 className="fw-bold fs-4 mb-1" style={{ color: '#1a1a2e' }}>
-          Architect Ledger IT
-        </h1>
-        <p className="text-muted small">Precision Infrastructure Management.</p>
+      <div className="d-flex align-items-center gap-2">
+        <i className="bi bi-bank fs-4 text-white"></i>
+        <h1 className="fw-bold fs-5 mb-0 text-white">Architect Ledger IT</h1>
       </div>
 
-      {/* Middle: Headline */}
+      {/* Middle */}
       <div>
-        <h2
-          className="fw-bold mb-4"
-          style={{ color: '#1a1a2e', lineHeight: 1.2, fontSize: '2.2rem' }}
-        >
-          Secure access for IT<br />professionals.
+        <h2 className="fw-bold text-white mb-3" style={{ fontSize: '2rem', lineHeight: 1.25 }}>
+          Secure access<br />for IT<br />professionals.
         </h2>
+        <p style={{ color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, fontSize: '0.9rem', maxWidth: '300px' }}>
+          Join the team managing critical infrastructure with precision and security.
+        </p>
 
-        <div
-          className="card border-0 shadow-sm p-3"
-          style={{ maxWidth: '280px', borderRadius: '12px' }}
-        >
-          <div className="d-flex align-items-center gap-2">
-            <div
-              className="rounded-circle d-flex align-items-center justify-content-center"
-              style={{ width: 36, height: 36, background: '#1a3a6b', flexShrink: 0 }}
-            >
-              <i className="bi bi-shield-check text-white small"></i>
+        <div className="mt-4 d-flex flex-column gap-2">
+          {[
+            { icon: 'bi-shield-check', text: 'Encrypted End-to-End Sessions' },
+            { icon: 'bi-person-badge', text: 'Role-based Onboarding' },
+            { icon: 'bi-building',     text: 'Department-level Access' },
+          ].map(({ icon, text }) => (
+            <div key={text} className="d-flex align-items-center gap-2">
+              <i className={`bi ${icon}`} style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}></i>
+              <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>{text}</span>
             </div>
-            <div>
-              <p className="fw-semibold mb-0 small">Enterprise Grade</p>
-              <p className="text-muted mb-0" style={{ fontSize: '0.78rem' }}>
-                Encrypted end-to-end sessions.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
-      <div /> {/* spacer */}
+      {/* Bottom */}
+      <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem' }}>
+        © {new Date().getFullYear()} Architect Ledger IT. All rights reserved.
+      </p>
     </div>
   );
 };
