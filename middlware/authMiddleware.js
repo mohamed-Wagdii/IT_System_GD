@@ -1,33 +1,32 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = async (req, res, next) => {
- try {
- const authHeaders = req.headers.authorization;
+  try {
+    const authHeaders = req.headers.authorization;
 
- if (!authHeaders) return res.json({ msg: "Token Not Found" });
+    if (!authHeaders) return res.status(401).json({ msg: "Token Not Found" });
 
- const token = authHeaders.split(" ")[1];
+    const token = authHeaders.split(" ")[1];
 
- const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
- req.user = decodedToken;
+    req.user = decodedToken.user;
 
- next();
- } catch (error) {
- return next(new AppError("Invalid or expired token. Please login again.", 401));
- }
+    next();
+  } catch (error) {
+    return res.status(401).json({ msg: "Invalid or expired token. Please login again." });
+  }
 };
 
-
 const adminOnly = (req, res, next) => {
- if (!req.user) {
- return next(new AppError("please, login", 401));
- }
+  if (!req.user) {
+    return res.status(401).json({ msg: "please, login" });
+  }
 
- if (req.user.role !== 'admin') {
- return next(new AppError("only for Admin", 403));
- }
- next();
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ msg: "only for Admin" });
+  }
+  next();
 };
 
 module.exports = {authMiddleware, adminOnly};

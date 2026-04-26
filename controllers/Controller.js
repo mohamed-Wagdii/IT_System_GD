@@ -57,13 +57,11 @@ const login = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user)
-      return res.status(400).json({ msg: "please create your acount first" });
-    console.log(user);
+      return res.status(400).json({ msg: "please create your account first" });
 
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword)
       return res.status(400).json({ msg: "invalid password" });
-    console.log(matchPassword);
 
     const token = jwt.sign(
       {
