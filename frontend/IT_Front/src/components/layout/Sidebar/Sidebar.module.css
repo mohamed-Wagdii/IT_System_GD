@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+}
+
+.sidebar {
+  background-color: var(--lp-bg);
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between; /* فوق وتحت */
+  padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Icon */
+.home {
+  background-color: var(--lp-blue);
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;
+  color: white;
+}
+
+/* subtitle */
+.header2 {
+  color: var(--lp-muted);
+  font-size: 12px;
+}
+
+/* ===== LINKS ===== */
+.links {
+  flex: 1;              /* يخليها في النص */
+  margin-top: 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+
+  color: inherit;
+}
+
+.navLink:hover {
+  background-color: var(--lp-white);
+  color: var(--lp-blue);
+}
+
+/* ===== BUTTON ===== */
+.create {
+  background-color: var(--lp-blue);
+  color: var(--lp-white);
+
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+
+  width: 100%;
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.create:hover {
+  opacity: 0.9;
+}
+

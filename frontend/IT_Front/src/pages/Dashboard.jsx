@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/tickets/Sidebar/Sidebar';
+import Sidebar from "../components/layout/Sidebar/Sidebar";
+import Navbar from '../components/layout/Navbar/Navbar';
+import TicketForm from '../components/UI/Form/TicketForm';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -12,8 +14,29 @@ function Dashboard() {
   };
 
   return (
+    <>
+      <Navbar />
+      <div className="row w-100">
+  <div className="col-3">
+    <Sidebar />
+  </div>
 
-        <Sidebar/>
+  <div className="col-9">
+    <TicketForm />
+  </div>
+</div>
+       
+    </>
+
+         
+
+        
+
+
+
+
+
+
     // <div className="d-flex align-items-center justify-content-center min-vh-100" style={{ background: '#f4f6fb' }}>
     //   <div className="card shadow-sm p-4" style={{ maxWidth: '420px', width: '100%', borderRadius: '12px' }}>
     //     <h4 className="fw-bold mb-1">Welcome, {user?.username} 👋</h4>
