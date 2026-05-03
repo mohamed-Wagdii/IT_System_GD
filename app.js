@@ -22,7 +22,10 @@ async function dbconnection() {
 dbconnection();
 
 const authRoutes = require("./routers/authRoutes");
+const ticketRoutes = require("./routers/ticketsRoutes");
 app.use("/api", authRoutes);
+app.use("/api", ticketRoutes);
+
 
 app.listen(port, () => {
   console.log(`server is running at port ${port} `);
