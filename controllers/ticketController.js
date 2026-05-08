@@ -58,6 +58,9 @@ const getTicketById = async (req, res) => {
         if(!mongoose.Types.ObjectId.isValid(ticketId)) {
             return res.status(400).json({ message: "Invalid ticket ID." });
         }
+        if(req.user.role !== "admin") {
+            return res.status(403).json({ message: "Access denied." });
+        }
         const ticket = await Tickets.findOne({
          _id: ticketId,
         createdBy: userId
